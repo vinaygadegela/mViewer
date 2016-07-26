@@ -12,6 +12,8 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -20,7 +22,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.google.common.base.Function;
 
 public class UIUtility {
-	private Logger log = Logger.getLogger(UIUtility.class);
+	
+	protected static final int pageTimeoutTime = 15;
+	protected final Logger log = Logger.getLogger(getClass());
+	protected long pageLoadStartTime;
+	protected long pageLoadEndTime;
 	public  final  int STALENESS_MAX_RETRY_COUNT=2;
 	int stale_count=1;
 	WebDriver driver;
@@ -28,14 +34,38 @@ public class UIUtility {
 	public UIUtility(WebDriver driver){
 		this.driver=driver;
 	}
-	public void Type(By locator,String text_to_type){
+	protected void markPageLoadStartTime() {
+		pageLoadStartTime = System.currentTimeMillis();
+	}
+	protected long markPageLoadEndTime() {
+		pageLoadEndTime = System.currentTimeMillis();
+		return pageLoadEndTime - pageLoadStartTime;
+	}
+
+	/**
+	 * Initialize the page
+	 * @param initialElement The webElement(s) to validate
+	 */
+	public void initPage(WebElement initialElement, WebElement... initialElements) {
+		PageFactory.initElements(new AjaxElementLocatorFactory(driver, pageTimeoutTime), this);
+		if (initialElement != null) {
+			UIUtility.waitForElementVisibility(driver, 15, initialElement);
+			for (WebElement element : initialElements) {
+				UIUtility.waitForElementVisibility(driver, 15, element);
+			}
+		}
+	}
+
+
+
+	public void Type(WebElement element,String text_to_type){
 		log.info("Trying to enter the text following text ..... "+text_to_type);
-		WebElement element=getWebElement( locator);
 		element.sendKeys(text_to_type);
 		log.info("Typed the text successfully... ");
 	}
 	
 	public void click(WebElement element){
+		log.info("Trying to click on element ..... "+element);
 		element.click();
 	}
 	public WebElement getWebElement( final By locator){
