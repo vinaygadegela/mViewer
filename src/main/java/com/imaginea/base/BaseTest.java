@@ -9,7 +9,6 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 
@@ -20,7 +19,7 @@ import com.imaginea.utils.FileUtilities;
 @Listeners(TestListener.class)
 public class BaseTest {
 	
-	private final Logger log = LogManager.getLogger(BaseTest.class.getName());
+	private final Logger log = LogManager.getLogger(BaseTest.class);
 	private WebDriver driver;
 	
 	@BeforeClass

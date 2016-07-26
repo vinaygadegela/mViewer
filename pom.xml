@@ -11,8 +11,11 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-  <mongo-version>3.3.0</mongo-version>
- </properties>
+		<mongo-version>3.3.0</mongo-version>
+		<poi-version>3.9</poi-version>
+		<poi-ooxml-version>3.9</poi-ooxml-version>
+		<poi-ooxml-schemas-version>3.9</poi-ooxml-schemas-version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -37,6 +40,22 @@
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>${mongo-version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi-ooxml-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>${poi-ooxml-schemas-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
