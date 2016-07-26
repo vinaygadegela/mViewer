@@ -34,7 +34,10 @@ public class UIUtility {
 		element.sendKeys(text_to_type);
 		log.info("Typed the text successfully... ");
 	}
-
+	
+	public void click(WebElement element){
+		element.click();
+	}
 	public WebElement getWebElement( final By locator){
 		WebElement element=null;
 		try{
