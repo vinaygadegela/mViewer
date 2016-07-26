@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.ITestContext;
+import org.testng.TestNG;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -26,6 +27,8 @@ public class BaseTest {
 	@Parameters({"browser"})
 	public void setup(String browser,ITestContext context) {
 		try {
+			TestNG test=new TestNG();
+			test.setUseDefaultListeners(false);
 			driver = DriverFactory.getDriver(browser);
 			driver.manage().window().maximize();
 			DriverManager.setDriver(driver);

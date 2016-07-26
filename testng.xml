@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="mViewer Test Suite" verbose="1">
-<!-- valid browsernames: chrome, firefox -->
-
+	<!-- valid browsernames: chrome, firefox -->
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
 	<test name="Basic Tests">
-	<parameter name="browser" value="chrome" preserve-order="true"/>
+		<parameter name="browser" value="chrome" preserve-order="true" />
 		<classes>
-			<class name="com.imaginea.tests.SampleTest"/>
+			<class name="com.imaginea.tests.SampleTest" />
 		</classes>
 	</test>
-	
+
 </suite>
