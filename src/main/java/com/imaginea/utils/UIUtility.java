@@ -57,7 +57,6 @@ public class UIUtility {
 	}
 
 
-
 	public void Type(WebElement element,String text_to_type){
 		log.info("Trying to enter the text following text ..... "+text_to_type);
 		element.sendKeys(text_to_type);
