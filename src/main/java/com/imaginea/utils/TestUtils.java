@@ -1,12 +1,14 @@
 package com.imaginea.utils;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebElement;
 
 public class TestUtils {
 	private final Logger log = LogManager.getLogger(TestUtils.class.getName());
@@ -43,6 +45,20 @@ public class TestUtils {
 			return "safaridriver";
 		}
 	}
-
+	
+	/**
+         * Get List of webelement in String
+         * 
+         * @param element
+         * @return
+         */
+        public static List<String> convertWebElementListToString(
+                        List<WebElement> element) {
+                List<String> list = new ArrayList<>();
+                for (WebElement e : element) {
+                        list.add(e.getText());
+                }
+                return list;
+        }
 
 }
