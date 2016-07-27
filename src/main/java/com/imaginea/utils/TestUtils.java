@@ -42,18 +42,6 @@ public class TestUtils {
         }
     }
 
-    /**
-     * Get List of webelement in String
-     * 
-     * @param element
-     * @return
-     */
-    public static List<String> convertWebElementListToString(List<WebElement> element) {
-        List<String> list = new ArrayList<>();
-        for (WebElement e : element) {
-            list.add(e.getText());
-        }
-        return list;
-    }
+
 
 }

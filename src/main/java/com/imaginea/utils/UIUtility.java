@@ -1,5 +1,7 @@
 package com.imaginea.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -49,9 +51,9 @@ public class UIUtility {
 	public void initPage(WebElement initialElement, WebElement... initialElements) {
 		PageFactory.initElements(new AjaxElementLocatorFactory(driver, pageTimeoutTime), this);
 		if (initialElement != null) {
-			UIUtility.waitForElementVisibility(driver, 15, initialElement);
+			waitForElementVisibility(driver, 15, initialElement);
 			for (WebElement element : initialElements) {
-				UIUtility.waitForElementVisibility(driver, 15, element);
+			waitForElementVisibility(driver, 15, element);
 			}
 		}
 	}
@@ -144,7 +146,21 @@ public class UIUtility {
 		return tokens[tokens.length-1].trim();
 	}
 	
-	public static void waitForElementVisibility(WebDriver driver, int timeout, WebElement element) {
+	public void waitForElementVisibility(WebDriver driver, int timeout, WebElement element) {
         new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOf(element));
 }
+	
+    /**
+     * Get List of webelement in String
+     * 
+     * @param element
+     * @return
+     */
+    public List<String> convertWebElementListToString(List<WebElement> element) {
+        List<String> list = new ArrayList<>();
+        for (WebElement e : element) {
+            list.add(e.getText());
+        }
+        return list;
+    }
 }

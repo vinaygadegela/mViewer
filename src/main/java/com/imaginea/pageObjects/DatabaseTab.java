@@ -10,7 +10,7 @@ import org.testng.log4testng.Logger;
 import com.imaginea.utils.TestUtils;
 import com.imaginea.utils.UIUtility;
 
-public class DatabaseTab {
+public class DatabaseTab extends UIUtility{
 
         WebDriver driver;
         Logger log = Logger.getLogger(DatabaseTab.class);
@@ -36,6 +36,7 @@ public class DatabaseTab {
          * @param driver
          */
         public DatabaseTab(WebDriver driver) {
+        		super(driver);
                 this.driver = driver;
         }
 
@@ -45,9 +46,9 @@ public class DatabaseTab {
          * @param dbName
          */
         public void createDb(String dbName) {
-                UIUtility.waitForElementVisibility(driver, 20, createDb);
+                waitForElementVisibility(driver, 20, createDb);
                 createDb.click();
-                UIUtility.waitForElementVisibility(driver, 20, dbNameTextBox);
+                waitForElementVisibility(driver, 20, dbNameTextBox);
                 dbNameTextBox.clear();
                 dbNameTextBox.sendKeys(dbName);
                 submitButton.click();
@@ -59,8 +60,8 @@ public class DatabaseTab {
          * @return
          */
         public List<String> getDBList(WebDriver driver) {
-                UIUtility.waitForElementVisibility(driver, 20, createDb);
-                return TestUtils.convertWebElementListToString(dbNames);
+                waitForElementVisibility(driver, 20, createDb);
+                return convertWebElementListToString(dbNames);
         }
 
         /**
