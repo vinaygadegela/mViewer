@@ -15,7 +15,7 @@ public class TestListener extends TestListenerAdapter{
 	
 	public void onTestFailure(ITestResult tr){
 		  driver=(WebDriver)tr.getTestContext().getAttribute("driverObj");
-		  takeScreenShot();
+		  takeScreenShot(tr.getName());
 	}
 	
 	public void onTestSuccess(ITestResult tr) {
@@ -24,10 +24,10 @@ public class TestListener extends TestListenerAdapter{
 	public void onTestSkipped(ITestResult tr) {
 	}
 	
-	public void takeScreenShot(){
+	public void takeScreenShot(String testName){
 		File srcFile=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 		try {
-			FileUtils.copyFile(srcFile,new File((System.getProperty("user.dir")+"src/Failed_Scree_Shots/ScreenShot-"+System.currentTimeMillis()+".png")));
+			FileUtils.copyFile(srcFile,new File((System.getProperty("user.dir")+"//ScreenShots//"+testName+".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

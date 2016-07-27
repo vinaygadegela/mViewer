@@ -13,7 +13,6 @@ public class FileUtilities {
 	public void deleteExisitngFolder(String fPath){
 		
 		File file = new File(fPath);
-		
 		if(file.isDirectory()){
 			try {
 				FileUtils.cleanDirectory(file);
@@ -26,6 +25,4 @@ public class FileUtilities {
            
 		}
 	}
-	
-	
 }

@@ -29,10 +29,6 @@ public class TestUtils {
             driverPath += File.separator + driverName;
         }
 
-        URL u1 = TestUtils.class.getClassLoader().getResource(driverPath);
-        System.out.println("URL: {}" + u1);
-
-        System.out.println("driverPath.." + driverPath);
         return driverPath;
     }
 

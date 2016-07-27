@@ -15,6 +15,7 @@
 		<poi-version>3.9</poi-version>
 		<poi-ooxml-version>3.9</poi-ooxml-version>
 		<poi-ooxml-schemas-version>3.9</poi-ooxml-schemas-version>
+		<mongo-version>3.3.0</mongo-version>
 	</properties>
 
 	<dependencies>
@@ -92,7 +93,9 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>log</directory>
+
+							<directory>Logs</directory>
+
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 					</filesets>

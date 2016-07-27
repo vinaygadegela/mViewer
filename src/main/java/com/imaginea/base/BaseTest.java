@@ -10,6 +10,7 @@ import org.testng.ITestContext;
 import org.testng.TestNG;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 
@@ -58,9 +59,9 @@ public class BaseTest {
 		driver.close();
 	}
 	
-	//@BeforeSuite
+	@BeforeSuite
 	public void setupTestSuite(){
 		FileUtilities utils= new FileUtilities();
-		utils.deleteExisitngFolder("src\\Logs");
+		utils.deleteExisitngFolder(System.getProperty("user.dir")+"ScreenShots");
 	}
 }

@@ -46,11 +46,11 @@ public class EventFireWebDriver extends AbstractWebDriverEventListener {
 		  }
 
 		  public void beforeClickOn(WebElement element, WebDriver driver) {
-		    // Do nothing.
+			  log.info("Going to click on "+element);
 		  }
 
 		  public void afterClickOn(WebElement element, WebDriver driver) {
-		    // Do nothing.
+			  log.info("Successfuly clicked on "+element);
 		  }
 
 		  public void beforeChangeValueOf(WebElement element, WebDriver driver) {
