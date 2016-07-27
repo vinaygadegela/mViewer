@@ -54,7 +54,9 @@ public class UIUtility {
 			waitForElementVisibility(driver, 15, initialElement);
 			for (WebElement element : initialElements) {
 			waitForElementVisibility(driver, 15, element);
-			}
+		}			
+		}else{
+			throw new NullPointerException("Initial Element is null or page is not loaded");
 		}
 	}
 
