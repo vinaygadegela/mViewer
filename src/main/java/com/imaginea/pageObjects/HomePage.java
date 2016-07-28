@@ -14,10 +14,12 @@ public class HomePage extends UIUtility{
 	@FindBy(css="#addDBDialog>div:nth-of-type(2) input") private WebElement inputDBTextBox;
 	@FindBy(id="yui-gen0-button") private WebElement submitButton;
 	
+	@FindBy(id="home") private WebElement homeMenu;;
+	
 	
 	public HomePage(WebDriver driver){
 		super(driver);
-		initPage(newButton);
+		initPage(homeMenu);
 	}
 	
 	public void createNewDataBase(){
