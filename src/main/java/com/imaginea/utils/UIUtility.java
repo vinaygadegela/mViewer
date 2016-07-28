@@ -31,7 +31,7 @@ public class UIUtility {
 	protected long pageLoadEndTime;
 	public  final  int STALENESS_MAX_RETRY_COUNT=2;
 	int stale_count=1;
-	WebDriver driver;
+	protected WebDriver driver;
 
 	public UIUtility(WebDriver driver){
 		this.driver=driver;

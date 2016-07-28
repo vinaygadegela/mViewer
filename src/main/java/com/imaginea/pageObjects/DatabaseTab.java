@@ -7,12 +7,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.log4testng.Logger;
 
-import com.imaginea.utils.TestUtils;
 import com.imaginea.utils.UIUtility;
 
 public class DatabaseTab extends UIUtility{
 
-        WebDriver driver;
         Logger log = Logger.getLogger(DatabaseTab.class);
 
         @FindBy(id = "infoText")
@@ -37,7 +35,6 @@ public class DatabaseTab extends UIUtility{
          */
         public DatabaseTab(WebDriver driver) {
         		super(driver);
-                this.driver = driver;
         }
 
         /**
