@@ -45,7 +45,7 @@ public class BaseTest {
 		if(driver==null){
 		driver=DriverManager.getDriver();
 		}
-//S		PageFactory.initElements(driver, this);
+	//	PageFactory.initElements(driver, this);
 		return driver;
 	}
 	
