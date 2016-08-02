@@ -24,7 +24,6 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
-import com.kareo.ui.Alert;
 
 public class UIUtility {
 
@@ -232,6 +231,6 @@ public class UIUtility {
 		actions.moveToElement(by.cssSelector(selector)))
 
 	}*/
-)
+
 
 }
