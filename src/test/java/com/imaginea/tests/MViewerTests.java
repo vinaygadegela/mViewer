@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.imaginea.base.BaseTest;
+import com.imaginea.pageObjects.CollectionsTab;
 import com.imaginea.pageObjects.DataBasesTab;
 import com.imaginea.pageObjects.HomePage;
 import com.imaginea.pageObjects.LoginPage;
@@ -19,6 +20,7 @@ public class MViewerTests extends BaseTest {
 	private LoginPage loginPage;
 	private HomePage homePage;
 	private DataBasesTab dataBaseTab;
+	private CollectionsTab collectionsTab;
 	private String url = "http://172.16.55.67:8081/index.html";
 
 	@BeforeClass
@@ -35,6 +37,34 @@ public class MViewerTests extends BaseTest {
 		String dbName = UIUtility.generateRandomString();
 		dataBaseTab.createDb(dbName);
 		Assert.assertTrue(dataBaseTab.getDBList(driver).contains(dbName), "Created Database is not available");
+		dataBaseTab.dropDb(dbName);
+	}
+
+	@Test
+	public void CreateDuplicateDataBase() {
+		loginPage = new LoginPage(driver);
+		homePage = loginPage.clickGoButton();
+		dataBaseTab = new DataBasesTab(driver);
+		String dbName = UIUtility.generateRandomString();
+		dataBaseTab.createDb(dbName);
+		Assert.assertTrue(dataBaseTab.getDBList(driver).contains(dbName), "Created Database is not available");
+		dataBaseTab.createDb(dbName);
+		Assert.assertEquals(dataBaseTab.getInfoMessage(),
+				"DB creation failed ! DB with name '" + dbName + "' ALREADY EXISTS.");
+		dataBaseTab.dropDb(dbName);
+
+	}
+
+	@Test
+	public void CreateDataBaseWithNameSpace() {
+		loginPage = new LoginPage(driver);
+		homePage = loginPage.clickGoButton();
+		dataBaseTab = new DataBasesTab(driver);
+		String dbName = UIUtility.generateRandomString().substring(0, 6) + " "
+				+ UIUtility.generateRandomString().substring(0, 6);
+		dataBaseTab.createDb(dbName);
+		Assert.assertEquals(dataBaseTab.getInfoMessage(),
+				"DB creation failed ! Invalid ns [" + dbName + ".system.namespaces].");
 	}
 
 	@Test
@@ -42,13 +72,44 @@ public class MViewerTests extends BaseTest {
 		loginPage = new LoginPage(driver);
 		homePage = loginPage.clickGoButton();
 		dataBaseTab = new DataBasesTab(driver);
-		String dbName = UUID.randomUUID().toString().substring(0, 12);
+		String dbName = UIUtility.generateRandomString();
 		dataBaseTab.createDb(dbName);
-		System.out.println(dataBaseTab.getDBList(driver));
 		Assert.assertTrue(dataBaseTab.getDBList(driver).contains(dbName), "Created Database is not available");
 		String collectName = UUID.randomUUID().toString().substring(0, 12);
 		dataBaseTab.addCollection(dbName, collectName);
+		Assert.assertEquals(dataBaseTab.getInfoMessage(),
+				"Collection [" + collectName + "] added to Database [" + dbName + "].");
 
+	}
+
+	@Test
+	public void addGridFSBucket() {
+		loginPage = new LoginPage(driver);
+		homePage = loginPage.clickGoButton();
+		dataBaseTab = new DataBasesTab(driver);
+		String dbName = UIUtility.generateRandomString();
+		dataBaseTab.createDb(dbName);
+		Assert.assertTrue(dataBaseTab.getDBList(driver).contains(dbName), "Created Database is not available");
+		String bucketName = UIUtility.generateRandomString();
+		dataBaseTab.addBucket(dbName, bucketName);
+		Assert.assertEquals(dataBaseTab.getInfoMessage(),
+				"GridFS bucket [" + bucketName + "] added to database [" + dbName + "].");
+	}
+
+	@Test
+	public void dropCollection() {
+		loginPage = new LoginPage(driver);
+		homePage = loginPage.clickGoButton();
+		dataBaseTab = new DataBasesTab(driver);
+		String dbName = UIUtility.generateRandomString();
+		dataBaseTab.createDb(dbName);
+		Assert.assertTrue(dataBaseTab.getDBList(driver).contains(dbName), "Created Database is not available");
+		String collectName = UUID.randomUUID().toString().substring(0, 12);
+		dataBaseTab.addCollection(dbName, collectName);
+		collectionsTab = new CollectionsTab(driver);
+		collectionsTab.dropCollection(collectName);
+		Assert.assertEquals(dataBaseTab.getInfoMessage(),
+				"Collection [" + collectName + "] has been deleted from Database [" + dbName + "].");
 	}
 
 	@Test
@@ -57,10 +118,15 @@ public class MViewerTests extends BaseTest {
 		homePage = loginPage.clickGoButton();
 		dataBaseTab = new DataBasesTab(driver);
 		String dbName = UIUtility.generateRandomString();
+		System.out.println(dbName);
 		dataBaseTab.createDb(dbName);
 		Assert.assertTrue(dataBaseTab.getDBList(driver).contains(dbName), "Created Database is not available");
+		int initial = dataBaseTab.getDBList(driver).size();
 		dataBaseTab.dropDb(dbName);
-		Assert.assertFalse(dataBaseTab.getDBList(driver).contains(dbName), "Database is not yet deleted");
+		int after = dataBaseTab.getDBList(driver).size();
+
+		System.out.println(dataBaseTab.getDBList(driver));
+		Assert.assertEquals(initial - after, 0);
 
 	}
 
