@@ -10,6 +10,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.testng.log4testng.Logger;
 
+import com.imaginea.utils.UIUtility;
+
 public class DataBasesTab extends HomePage {
 
 	private Logger log = Logger.getLogger(DataBasesTab.class);
@@ -38,6 +40,7 @@ public class DataBasesTab extends HomePage {
 	private String dropDatabase = "div[id='%s_subMenu'] ul>li:nth-child(3)>a";
 	private String statistics = "div[id='%s_subMenu'] ul>li:nth-child(4)>a";
 	private String jQuerySelector = "'#yui-gen0-button'";
+	private String confirmYesButton = ".button-group>span:nth-of-type(1) button";
 
 	@FindBy(css = "#addColDialog [for='name']+input")
 	private WebElement collectionName;
@@ -51,6 +54,10 @@ public class DataBasesTab extends HomePage {
 	private WebElement cancel;
 	@FindBy(css = "#yui-gen0-button")
 	private WebElement yes;
+	@FindBy(css = "[method='GET'] input")
+	private WebElement bucketNames;
+	@FindBy(xpath = "//button[text()='Yes']")
+	private WebElement yes_ConfirmDropDB;
 
 	/**
 	 * Constructor to initialize Database tab
@@ -74,6 +81,7 @@ public class DataBasesTab extends HomePage {
 		dbNameTextBox.clear();
 		dbNameTextBox.sendKeys(dbName);
 		submitButton.click();
+		UIUtility.sleep(5000);
 	}
 
 	public void dropDb(String dbName) {
@@ -86,8 +94,9 @@ public class DataBasesTab extends HomePage {
 				.perform();
 
 		findElementByCssSelector(driver, String.format(dropDatabase, dbName)).click();
-		((JavascriptExecutor) driver).executeScript("return $(" + jQuerySelector + ").click();");
+		clickElementusingJquery(driver, confirmYesButton);
 		switchToAlert_Accept(driver);
+		UIUtility.sleep(30000);
 	}
 
 	public void addCollection(String dbName, String collectName) {
@@ -118,6 +127,7 @@ public class DataBasesTab extends HomePage {
 		maxDocuments.clear();
 		maxDocuments.sendKeys("100");
 		submit.click();
+
 	}
 
 	/**
@@ -136,7 +146,29 @@ public class DataBasesTab extends HomePage {
 	 * @return
 	 */
 	public String getInfoMessage() {
+		waitForElementVisibility(driver, 20, infoMessage);
 		return infoMessage.getText();
 	}
 
+	public void addBucket(String dbName, String bucketName) {
+		String locator = String.format(dbSettingsGear, dbName);
+		waitForElementClickable(driver, 30, findElementByCssSelector(driver, locator));
+		Actions actions = new Actions(driver);
+		actions.moveToElement(findElementByCssSelector(driver, locator)).build().perform();
+
+		driver.findElement(By.cssSelector(locator)).click();
+		String locator1 = "//*[@id='%s_subMenu']";
+		waitForElementVisibility(driver, 30, driver.findElement(By.xpath(String.format(locator1, dbName))));
+		actions.moveToElement(driver.findElement(By.xpath(String.format(locator1, dbName)))).build().perform();
+		String locator2 = String.format(addGridFSBucket, dbName);
+		waitForElementClickable(driver, 30, findElementByCssSelector(driver, locator2));
+		while (findElementByCssSelector(driver, locator2).isDisplayed()) {
+			clickElementUsingJS(driver, findElementByCssSelector(driver, locator2));
+		}
+		waitForElementVisibility(driver, 30, bucketNames);
+		bucketNames.clear();
+		bucketNames.sendKeys(bucketName);
+		clickElementUsingJS(driver, yes);
+
+	}
 }

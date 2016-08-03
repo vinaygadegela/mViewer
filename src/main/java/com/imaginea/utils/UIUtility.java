@@ -223,14 +223,32 @@ public class UIUtility {
 		driver.findElement(by).click();
 
 	}
-	public static WebElement findElementByCssSelector(WebDriver driver, String selector){
+
+	public static WebElement findElementByCssSelector(WebDriver driver, String selector) {
 		return driver.findElement(By.cssSelector(selector));
 	}
-	/*public static void moveToElement(WebDriver driver, By by){
-		Actions actions = new Actions(driver);
-		actions.moveToElement(by.cssSelector(selector)))
+	/*
+	 * public static void moveToElement(WebDriver driver, By by){ Actions
+	 * actions = new Actions(driver);
+	 * actions.moveToElement(by.cssSelector(selector)))
+	 * 
+	 * }
+	 */
 
-	}*/
+	public static void sleep(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			System.out.println(e);
+		}
+	}
 
+	public static void clickElementusingJquery(WebDriver driver, String selector) {
+		JavascriptExecutor js = null;
+		String jquery1 = "jQuery(\"" + selector + "\").click();";
+		js = (JavascriptExecutor) driver;
+		js.executeScript(jquery1);
+
+	}
 
 }
