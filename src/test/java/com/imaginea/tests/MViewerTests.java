@@ -12,6 +12,7 @@ import com.imaginea.pageObjects.CollectionsTab;
 import com.imaginea.pageObjects.DataBasesTab;
 import com.imaginea.pageObjects.HomePage;
 import com.imaginea.pageObjects.LoginPage;
+import com.imaginea.utils.ConfigUtil;
 import com.imaginea.utils.UIUtility;
 
 public class MViewerTests extends BaseTest {
@@ -21,10 +22,11 @@ public class MViewerTests extends BaseTest {
 	private HomePage homePage;
 	private DataBasesTab dataBaseTab;
 	private CollectionsTab collectionsTab;
-	private String url = "http://172.16.55.67:8081/index.html";
+	private String url ;
 
 	@BeforeClass
 	public void beforeClass() {
+		url = ConfigUtil.getInstance().getProperty("url");
 		driver = getDriver();
 		driver.get(url);
 	}

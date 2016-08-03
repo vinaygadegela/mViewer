@@ -1,9 +1,9 @@
 package com.imaginea.pageObjects;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -20,11 +20,11 @@ public class CollectionsTab extends HomePage {
 	private String collectionSettingsGear = "a[label='%s']+a";
 	private String dropCollection = "div[id='%s_subMenu'] ul>li:nth-child(2)>a";
 
-	String clickCollection = "//*[@class='yui3-menu-toggle'][@href='#%s_subMenu']";
-	String addDoc = "//a[@text(),Add Document]";
+	String clickCollection = "li[data-collection-name='%s'] a[role='presentation']";
+	String addDoc = ".yui3-menuitem.yui3-menuitem-active a";
 	// String dropCollection = "//a[@text(),Drop Collection]";
 	String statstics = "//a[@text(),Statistics]";
-	String yesButton = "//button[text()='Yes']";
+	String yesButton = "#yui-gen4-button";
 	String noButton = "//button[text()='No']";
 	String textBox = ".bd>form>textarea";
 	String submitDocument = "//button[text()='Submit']";
@@ -40,13 +40,15 @@ public class CollectionsTab extends HomePage {
 	}
 
 	public void addDocument(String collectionName, String docName) {
+		System.out.println("done");
 		String collection = String.format(clickCollection, collectionName);
-		clickElement(collection);
-		clickElement(addDoc);
+		driver.manage().timeouts().implicitlyWait(1000L, TimeUnit.MILLISECONDS);
+		clickElementCss(collection); 
+		clickElementCss(addDoc);
 		clearText(textBox);
 		ExcelManager excel = new ExcelManager(System.getProperty("user.dir") + "src\\main\\resources");
 		String docData = excel.getCellDataXLS("ADD", 4, 1);
-		clickElement(yesButton);
+		clickElementCss(yesButton);
 	}
 
 	public void dropCollection(String collectionName) {
@@ -57,7 +59,7 @@ public class CollectionsTab extends HomePage {
 		findElementByCssSelector(driver, locator).click();
 		waitForElementVisibility(driver, 30,
 				findElementByCssSelector(driver, String.format(dropCollection, collectionName)));
-		actions.moveToElement(findElementByCssSelector(driver, String.format(dropCollection)).build().perform();
+		actions.moveToElement(findElementByCssSelector(driver, String.format(dropCollection))).build().perform();
 		findElementByCssSelector(driver, dropCollection).click();
 		clickElement(yesButton);
 

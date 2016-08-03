@@ -1,6 +1,7 @@
 package com.imaginea.pageObjects;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -34,7 +35,7 @@ public class DataBasesTab extends HomePage {
 	@FindBy(xpath = "//a[text()='Add Collection']")
 	private WebElement addCollectionLink;
 
-	private String dbSettingsGear = "a[label='%s']+a";
+	private String dbSettingsGear = "a[href='#%s_subMenu']";
 	private String addCollection = "div[id='%s_subMenu'] ul>li:nth-child(1)>a";
 	private String addGridFSBucket = "div[id='%s_subMenu'] ul>li:nth-child(2)>a";
 	private String dropDatabase = "div[id='%s_subMenu'] ul>li:nth-child(3)>a";
@@ -42,7 +43,7 @@ public class DataBasesTab extends HomePage {
 	private String jQuerySelector = "'#yui-gen0-button'";
 	private String confirmYesButton = ".button-group>span:nth-of-type(1) button";
 
-	@FindBy(css = "#addColDialog [for='name']+input")
+	@FindBy(css = "#addColDialog #newCollName")
 	private WebElement collectionName;
 	@FindBy(css = "#addColDialog [for='collSize']+input")
 	private WebElement size;
@@ -106,26 +107,25 @@ public class DataBasesTab extends HomePage {
 
 	public void clickAddCollection(String dbName, String collectName) {
 		String locator = String.format(dbSettingsGear, dbName);
-		waitForElementClickable(driver, 30, findElementByCssSelector(driver, locator));
-		Actions actions = new Actions(driver);
-		actions.moveToElement(findElementByCssSelector(driver, locator)).build().perform();
-
+		waitForPageLoad(driver);
+		clickElementusingJquery(driver, locator);		
+		Actions actions = new Actions(driver);		
 		driver.findElement(By.cssSelector(locator)).click();
 		String locator1 = "//*[@id='%s_subMenu']";
-		waitForElementVisibility(driver, 30, driver.findElement(By.xpath(String.format(locator1, dbName))));
-		actions.moveToElement(driver.findElement(By.xpath(String.format(locator1, dbName)))).build().perform();
 		String locator2 = String.format(addCollection, dbName);
-		waitForElementClickable(driver, 30, findElementByCssSelector(driver, locator2));
-		while (findElementByCssSelector(driver, locator2).isDisplayed()) {
-			clickElementUsingJS(driver, findElementByCssSelector(driver, locator2));
-		}
-
+		waitForElementClickable(driver, 30, driver.findElement(By.xpath(String.format(locator1, dbName))));
+		driver.manage().timeouts().implicitlyWait(1000L, TimeUnit.MILLISECONDS);
+		actions.moveToElement(driver.findElement(By.xpath(String.format(locator1, dbName)))).click().build().perform();
+		waitForElementClickable(driver, 30, driver.findElement(By.cssSelector(String.format(locator2, dbName))));
+		driver.manage().timeouts().implicitlyWait(10000L, TimeUnit.MILLISECONDS);
+		actions.moveToElement(driver.findElement(By.cssSelector(String.format(locator2, dbName)))).click().build().perform();		
 		waitForElementVisibility(driver, 30, collectionName);
 		collectionName.sendKeys(collectName);
-		size.clear();
+		/*size.clear();
 		size.sendKeys("1024");
 		maxDocuments.clear();
-		maxDocuments.sendKeys("100");
+		maxDocuments.sendKeys("100");*/
+		waitForElementVisibility(driver, 30, submit);
 		submit.click();
 
 	}

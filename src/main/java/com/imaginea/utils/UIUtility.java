@@ -186,6 +186,12 @@ public class UIUtility {
 	public void clickElement(String locator) {
 		driver.findElement(By.xpath(locator)).click();
 	}
+	
+	public void clickElementCss(String locator) {
+		WebElement element = driver.findElement(By.cssSelector(locator));
+		waitForElementVisibility(driver, 20, element);
+		element.click();
+	}
 
 	public void clearText(String locator) {
 		driver.findElement(By.cssSelector(locator)).clear();

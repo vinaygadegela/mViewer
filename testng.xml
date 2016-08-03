@@ -10,6 +10,7 @@
 		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.imaginea.tests.MViewerTests"/>
+			<class name="com.imaginea.tests.CollectionTestCase"/>
 		</classes>
 	</test>
 
