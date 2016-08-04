@@ -20,7 +20,7 @@ public class CollectionsTab extends HomePage {
 	private String collectionSettingsGear = "a[label='%s']+a";
 	private String dropCollection = "div[id='%s_subMenu'] ul>li:nth-child(2)>a";
 
-	String clickCollection = "li[data-collection-name='%s'] a[role='presentation']";
+	String clickCollection = "span.yui3-menu-label a[href='#%s_subMenu']";
 	String addDoc = ".yui3-menuitem.yui3-menuitem-active a";
 	// String dropCollection = "//a[@text(),Drop Collection]";
 	String statstics = "//a[@text(),Statistics]";
@@ -34,20 +34,28 @@ public class CollectionsTab extends HomePage {
 
 	@FindBy(id = "collNames")
 	private WebElement collections;
+	
+	@FindBy(css="#infoMsg #infoText")
+	private WebElement infoText;
 
 	public CollectionsTab(WebDriver driver) {
 		super(driver);
 	}
 
 	public void addDocument(String collectionName, String docName) {
-		System.out.println("done");
+		System.out.println();
+		Actions actions = new Actions(driver);
 		String collection = String.format(clickCollection, collectionName);
-		driver.manage().timeouts().implicitlyWait(1000L, TimeUnit.MILLISECONDS);
-		clickElementCss(collection); 
+		driver.manage().timeouts().implicitlyWait(10000L, TimeUnit.MILLISECONDS);
+		WebElement element = driver.findElement(By.cssSelector(collection));
+		waitForElementClickable(driver, 40, element);
+		actions.moveToElement(element).click().build().perform();
+		driver.manage().timeouts().implicitlyWait(5000L, TimeUnit.MILLISECONDS);
 		clickElementCss(addDoc);
 		clearText(textBox);
-		ExcelManager excel = new ExcelManager(System.getProperty("user.dir") + "src\\main\\resources");
-		String docData = excel.getCellDataXLS("ADD", 4, 1);
+		ExcelManager excel = new ExcelManager(System.getProperty("user.dir") + "\\src\\main\\resources\\mviewertestcases.xls");
+		String docData = excel.getCellDataXLS("ADD", 1, 5);		
+		enterText(textBox, docData);
 		clickElementCss(yesButton);
 	}
 
@@ -75,5 +83,14 @@ public class CollectionsTab extends HomePage {
 	public List<String> getCollectionsList(WebDriver driver) {
 		waitForElementVisibility(driver, 60, collections);
 		return convertWebElementListToString(collNames);
+	}
+	
+	
+	/**
+	 * Get Info Message Text
+	 * @return
+	 */
+	public String getInfoText(){
+		return infoText.getText();
 	}
 }

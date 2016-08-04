@@ -43,7 +43,7 @@ public class DataBasesTab extends HomePage {
 	private String jQuerySelector = "'#yui-gen0-button'";
 	private String confirmYesButton = ".button-group>span:nth-of-type(1) button";
 
-	@FindBy(css = "#addColDialog #newCollName")
+	@FindBy(css = "#addColDialog input[type='text']")
 	private WebElement collectionName;
 	@FindBy(css = "#addColDialog [for='collSize']+input")
 	private WebElement size;
@@ -88,13 +88,20 @@ public class DataBasesTab extends HomePage {
 	public void dropDb(String dbName) {
 		String locator = String.format(dbSettingsGear, dbName);
 		Actions actions = new Actions(driver);
-		actions.moveToElement(findElementByCssSelector(driver, locator)).build().perform();
+		actions.moveToElement(findElementByCssSelector(driver, locator))
+				.build().perform();
 		findElementByCssSelector(driver, locator).click();
-		waitForElementVisibility(driver, 30, findElementByCssSelector(driver, (String.format(dropDatabase, dbName))));
-		actions.moveToElement(driver.findElement(By.cssSelector(String.format(dropDatabase, dbName)))).build()
-				.perform();
+		waitForElementVisibility(
+				driver,
+				30,
+				findElementByCssSelector(driver,
+						(String.format(dropDatabase, dbName))));
+		actions.moveToElement(
+				driver.findElement(By.cssSelector(String.format(dropDatabase,
+						dbName)))).build().perform();
 
-		findElementByCssSelector(driver, String.format(dropDatabase, dbName)).click();
+		findElementByCssSelector(driver, String.format(dropDatabase, dbName))
+				.click();
 		clickElementusingJquery(driver, confirmYesButton);
 		switchToAlert_Accept(driver);
 		UIUtility.sleep(30000);
@@ -108,23 +115,30 @@ public class DataBasesTab extends HomePage {
 	public void clickAddCollection(String dbName, String collectName) {
 		String locator = String.format(dbSettingsGear, dbName);
 		waitForPageLoad(driver);
-		clickElementusingJquery(driver, locator);		
-		Actions actions = new Actions(driver);		
-		driver.findElement(By.cssSelector(locator)).click();
+		Actions actions = new Actions(driver);
+		WebElement dbElement = driver.findElement(By.cssSelector(locator));
+		waitForElementClickable(driver, 40, dbElement);
+		dbElement.click();
 		String locator1 = "//*[@id='%s_subMenu']";
 		String locator2 = String.format(addCollection, dbName);
-		waitForElementClickable(driver, 30, driver.findElement(By.xpath(String.format(locator1, dbName))));
-		driver.manage().timeouts().implicitlyWait(1000L, TimeUnit.MILLISECONDS);
-		actions.moveToElement(driver.findElement(By.xpath(String.format(locator1, dbName)))).click().build().perform();
-		waitForElementClickable(driver, 30, driver.findElement(By.cssSelector(String.format(locator2, dbName))));
+		driver.manage().timeouts().implicitlyWait(10000L, TimeUnit.MILLISECONDS);		
 		driver.manage().timeouts().implicitlyWait(10000L, TimeUnit.MILLISECONDS);
-		actions.moveToElement(driver.findElement(By.cssSelector(String.format(locator2, dbName)))).click().build().perform();		
+		actions.moveToElement(
+				driver.findElement(By.xpath(String.format(locator1, dbName))))
+				.click().build().perform();
+		waitForElementClickable(driver, 30, driver.findElement(By
+				.cssSelector(String.format(locator2, dbName))));
+		driver.manage().timeouts()
+				.implicitlyWait(10000L, TimeUnit.MILLISECONDS);
+		actions.moveToElement(
+				driver.findElement(By.cssSelector(String.format(locator2,
+						dbName)))).click().build().perform();
 		waitForElementVisibility(driver, 30, collectionName);
 		collectionName.sendKeys(collectName);
-		/*size.clear();
+		size.clear();
 		size.sendKeys("1024");
 		maxDocuments.clear();
-		maxDocuments.sendKeys("100");*/
+		maxDocuments.sendKeys("100");
 		waitForElementVisibility(driver, 30, submit);
 		submit.click();
 
@@ -152,18 +166,25 @@ public class DataBasesTab extends HomePage {
 
 	public void addBucket(String dbName, String bucketName) {
 		String locator = String.format(dbSettingsGear, dbName);
-		waitForElementClickable(driver, 30, findElementByCssSelector(driver, locator));
+		waitForElementClickable(driver, 30,
+				findElementByCssSelector(driver, locator));
 		Actions actions = new Actions(driver);
-		actions.moveToElement(findElementByCssSelector(driver, locator)).build().perform();
+		actions.moveToElement(findElementByCssSelector(driver, locator))
+				.build().perform();
 
 		driver.findElement(By.cssSelector(locator)).click();
 		String locator1 = "//*[@id='%s_subMenu']";
-		waitForElementVisibility(driver, 30, driver.findElement(By.xpath(String.format(locator1, dbName))));
-		actions.moveToElement(driver.findElement(By.xpath(String.format(locator1, dbName)))).build().perform();
+		waitForElementVisibility(driver, 30,
+				driver.findElement(By.xpath(String.format(locator1, dbName))));
+		actions.moveToElement(
+				driver.findElement(By.xpath(String.format(locator1, dbName))))
+				.build().perform();
 		String locator2 = String.format(addGridFSBucket, dbName);
-		waitForElementClickable(driver, 30, findElementByCssSelector(driver, locator2));
+		waitForElementClickable(driver, 30,
+				findElementByCssSelector(driver, locator2));
 		while (findElementByCssSelector(driver, locator2).isDisplayed()) {
-			clickElementUsingJS(driver, findElementByCssSelector(driver, locator2));
+			clickElementUsingJS(driver,
+					findElementByCssSelector(driver, locator2));
 		}
 		waitForElementVisibility(driver, 30, bucketNames);
 		bucketNames.clear();

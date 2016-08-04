@@ -197,6 +197,16 @@ public class UIUtility {
 		driver.findElement(By.cssSelector(locator)).clear();
 
 	}
+	
+	/**
+	 * Send Keys in UI
+	 * 
+	 * @param locator
+	 * @param keysToSend
+	 */
+	public void enterText(String locator,String keysToSend) {
+		driver.findElement(By.cssSelector(locator)).sendKeys(keysToSend);
+	}
 
 	public void clickElementUsingJS(WebDriver driver, WebElement element) {
 
